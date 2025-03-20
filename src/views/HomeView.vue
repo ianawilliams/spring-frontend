@@ -1,79 +1,47 @@
 <template>
   <BaseUi>
+    <button @click="alphOrder = !alphOrder">
+      {{ alphOrder ? "Points" : "Alphabetical" }} Order
+    </button>
     <template #header>
       Filters here
     </template>
     <template v-if="loading">
       Loading...
     </template>
-    <template v-else-if="users.length">
-      <UserItem
+    <template v-else-if="users && users.length">
+      <UserDisplay
         v-for="(user, index) in users"
         :key="index"
         :user="user"
       />
     </template>
-    <template v-else>
+    <div v-else class="text-center">
       {{ $t("empty") }}
-    </template>
+    </div>
   </BaseUi>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { User } from '@/types/user';
-import UserItem from '@/components/users/UserItem.vue';
+import { ref, watch } from 'vue';
+import UserDisplay from '@/components/users/UserItem.vue';
 import BaseUi from '@/layouts/BaseUi.vue';
+import { useQuery } from '@vue/apollo-composable'
+import { getUsers } from '@/graphql/queries';
+import type { UserItem } from '@/types/user';
 
-const loading = ref(false);
+const alphOrder = ref(false);
+
+const users = ref<UserItem[]>([]);
+const { result, loading } = useQuery(getUsers, {
+  alph: alphOrder
+});
 
 
-const users: User[] = [
-  {
-    id: 1,
-    name: "Emma",
-    age: 24,
-    address: {
-      address: "Somewhere",
-    },
-    points: 0,
-  },
-  {
-    id: 2,
-    name: "Noah",
-    age: 24,
-    address: {
-      address: "Somewhere",
-    },
-    points: 0,
-  },
-  {
-    id: 3,
-    name: "James",
-    age: 24,
-    address: {
-      address: "Somewhere",
-    },
-    points: 0,
-  },
-  {
-    id: 4,
-    name: "William",
-    age: 24,
-    address: {
-      address: "Somewhere",
-    },
-    points: 0,
-  },
-  {
-    id: 5,
-    name: "Olivia",
-    age: 24,
-    address: {
-      address: "Somewhere",
-    },
-    points: 0,
-  },
-];
+watch(result, (value) => {
+  if (value.users) {
+    users.value = value.users;
+  }
+})
 
 </script>

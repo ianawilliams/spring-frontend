@@ -24,5 +24,10 @@ withDefaults(defineProps<{
 
   color: $primary;
   border: 1px solid $primary;
+
+  &:disabled,
+  &[disabled] {
+    opacity: 0.4;
+  }
 }
 </style>

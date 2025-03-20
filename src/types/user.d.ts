@@ -8,6 +8,12 @@ export type UserInput = {
   address: Address;
 };
 
+export type UserItem = {
+  id: number;
+  name: string;
+  points: number;
+}
+
 export type User = UserInput & {
   id: number;
   points: number;
