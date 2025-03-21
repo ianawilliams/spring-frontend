@@ -1,39 +1,70 @@
 <template>
   <div class="user-item">
-    {{ user.name }} - {{  $t("points", { value: user.points }) }}
+    <div class="user-item__content">
+      {{ user.name }}
 
-    <BtnIcon icon="plus" @click.stop="increase" />
-    <BtnIcon :disabled="user.points == 0" icon="minus" />
+      <BtnIcon 
+        icon="plus" 
+        @click.stop="increase"
+      />
+      <BtnIcon
+        :disabled="user.points == 0"
+        icon="minus"
+        @click.stop="decrease"
+      />
+      {{ user.points }} {{ user.points == 1 ? "point" : "points" }}
+    </div>
+    <div>
+      <BtnIcon
+        icon="close"
+        @click.stop="emit('delete-user')"
+      />
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
 import type { UserItem } from '@/types/user';
-import { increasePoints } from '@/graphql/mutations';
-import { useQuery } from '@vue/apollo-composable'
-// import { provideApolloClient } from '@vue/apollo-composable'
+import { increasePoints, decreasePoints } from '@/graphql/mutations';
+import { useMutation } from '@vue/apollo-composable'
 
 const props = defineProps<{ user: UserItem }>()
-const currId = ref(props.user.id);
+
+const { mutate: addPoint } = useMutation(increasePoints)
+const { mutate: minusPoint } = useMutation(decreasePoints)
+// const { mutate: removeUser } = useMutation(deleteUser);
+
+const emit = defineEmits(["point-change", "delete-user"])
 
 const increase = async () => {
-  const { result } = useQuery(increasePoints, {
-    id: currId,
-  })
-
-  // const query = provideApolloClient(apolloClient)(() => useQuery(increasePoints, {
-  //   id: props.user.id,
-  // }))
-
-  console.log("increase result: ");
-  console.log(result);
+  await addPoint({id: props.user.id});
+  emit("point-change");
 }
+
+const decrease = async () => {
+  await minusPoint({id: props.user.id});
+  emit("point-change");
+}
+
+// const remove = async () => {
+//   try {
+//     await removeUser({id: props.user.id});
+//     emit('delete-user');
+//   } catch (e: unknown) {
+//     console.log("Error:")
+//     console.log(e);
+//   }
+// }
 
 </script>
 <style lang="scss" scoped>
 .user-item {
+  display: flex;
   padding: $padding;
   margin: $padding 0;
   border: 1px solid $border-color;
+
+  .user-item__content {
+    flex-grow: 1;
+  }
 }
 </style>

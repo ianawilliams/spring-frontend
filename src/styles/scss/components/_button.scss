@@ -1,0 +1,45 @@
+@use "@/styles/scss/vars/index" as *;
+
+.btn {
+    border: 1px solid #e2e8f0;
+    background: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: $text-grey;
+    cursor: pointer;
+
+    &:hover {
+        background: #f8fafc;
+    }
+
+    &.btn--wide {
+        width: 100%;
+    }
+
+    &.btn--primary {
+        color: $background-main;
+        background: $primary;
+        border-color: $primary;
+
+        &:hover {
+            background: $primary-dark;
+            border-color: $primary-dark;
+        }
+    }
+
+    &.btn--alert {
+        color: $background-main;
+        background: $alert-red;
+        border-color: $alert-red-dark;
+
+        &:hover {
+            background: $alert-red-dark;
+        }
+    }
+
+    &:disabled,
+    &[disabled] {
+        opacity: 0.4;
+    }
+}

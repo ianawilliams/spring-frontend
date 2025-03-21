@@ -1,5 +1,5 @@
 export type Address = {
-  address: string;
+  first: string;
 }
 
 export type UserInput = {

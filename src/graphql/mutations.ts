@@ -9,3 +9,33 @@ export const increasePoints = gql`
         }
     }
 `;
+
+export const decreasePoints = gql`
+    mutation decreasePoints($id: Int!) {
+        decreasePoints(id: $id) {
+            id
+            name
+            points
+        }
+    }
+`;
+
+export const deleteUser = gql`
+    mutation deleteUser($id: Int!) {
+        deleteUser(id: $id) {
+            id
+            name
+            points
+        }
+    }
+`;
+
+// export const deleteUser = gql`
+//     mutation deleteUser($id: Int!) {
+//         deleteUser(id: $id) {
+//             id
+//             name
+//             points
+//         }
+//     }
+// `;

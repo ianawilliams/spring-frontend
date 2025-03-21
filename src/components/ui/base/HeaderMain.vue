@@ -3,11 +3,13 @@
     <div class="header__main">
       <slot></slot>
     </div>
-    <LanguageSwitcher />
+    <div>
+      <slot name="right"></slot>
+    </div>
   </header>
 </template>
 <script setup lang="ts">
-  import LanguageSwitcher from '@/components/language/LanguageSwitcher.vue';
+  //import LanguageSwitcher from '@/components/language/LanguageSwitcher.vue';
 </script>
 <style lang="scss" scoped>
 header {
@@ -23,6 +25,7 @@ header {
   background: $background-main;
 
   .header__main {
+    display: flex;
     flex-grow: 1;
   }
 }

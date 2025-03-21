@@ -1,10 +1,15 @@
 :root {
     --primary: #673ab7;
+    --primary-dark: #4d2b8c;
     --background-main: #FFFFFF;
     --border: #c4c4c4;
 }
 
 html {
     font-size: 16px;
+    overflow: hidden;
 }
 
+.app-wrapper {
+    overflow: auto;
+}

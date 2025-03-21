@@ -1,5 +1,9 @@
 <template>
-  <button :disabled="disabled" class="btn-icon">
+  <button
+    :disabled="disabled"
+    class="btn-icon"
+    :class="{'btn-icon--filled': filled}"
+  >
     <i :class="`mdi mdi-${icon}`" />
   </button>
 </template>
@@ -7,8 +11,10 @@
 withDefaults(defineProps<{
   icon: string;
   disabled?: boolean;
+  filled?: boolean;
 }>(), {
   disabled: false,
+  filled: false,
 });
 </script>
 <style lang="scss" scoped>
@@ -24,6 +30,15 @@ withDefaults(defineProps<{
 
   color: $primary;
   border: 1px solid $primary;
+
+  &.btn-icon--filled {
+    background: $primary;
+    color: $background-main;
+  }
+
+  &.btn-icon--no-border {
+    border: none;
+  }
 
   &:disabled,
   &[disabled] {
