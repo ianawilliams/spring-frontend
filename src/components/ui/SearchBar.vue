@@ -1,36 +1,37 @@
 <template>
     <div
         class="search-bar"
-        :class="{'search-bar--focused': focused }"
-        @click.stop="toggleFocus"
+        :class="{
+            'search-bar--focused': focused,
+            'search-bar--btn': searchTerm && searchTerm.length
+        }"
     >
-        <i class="mdi mdi-magnify" />
+        <label :for="id">
+            <i class="mdi mdi-magnify" />
+        </label>
         <input
             v-model="searchTerm"
+            :id="id"
             ref="searchInput"
             placeholder="Search..."
             @focus="focused = true"
             @blur="focused = false"
         />
         <BtnIcon
+            v-if="searchTerm && searchTerm.length"
             class="btn-icon--no-border"
-            :disabled="!(searchTerm && searchTerm.length)"
             icon="close"
             @click.stop="searchTerm = null"
         />
     </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, useId } from 'vue';
 const searchTerm = defineModel<string | null>();
 const focused = ref(false);
 const searchInput = ref<HTMLInputElement | null>(null);
 
-const toggleFocus = () => {
-    if (!focused.value &&  searchInput.value) {
-        searchInput.value.focus();
-    }
-}
+const id = `search-${useId()}`;
 
 </script>
 <style lang="scss" scoped>
@@ -41,6 +42,13 @@ const toggleFocus = () => {
     border: 1px solid $border-color;
     padding-left: 2px;
     border-radius: 4px;
+    overflow: hidden;
+
+    &.search-bar--btn {
+        input {
+            padding-right: 5px;
+        }
+    }
 
     i {
         color: $border-color;
@@ -53,16 +61,13 @@ const toggleFocus = () => {
             color: $primary;
         }
     }
-
-    &:deep(.btn-icon) {
-        &:disabled,
-        &[disabled] {
-            visibility: hidden;
-        }
-    }
-
+    /*
+        Input has padding of 5px horizontally and
+        24px if the clear button isn't available
+    */
     input {
-        padding: 0 5px;
+        padding-left: 5px;
+        padding-right: calc(5px + 24px);
         height: 26px;
         border: none;
         outline: none;

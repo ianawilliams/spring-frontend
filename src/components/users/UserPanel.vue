@@ -25,7 +25,7 @@ import { useQuery } from '@vue/apollo-composable'
 import { getUser } from '@/graphql/queries';
 
 const props = defineProps<{
-  id: number;
+  id: string;
 }>()
 
 const userId = toRef(props, "id");

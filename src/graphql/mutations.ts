@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client/core";
 
 export const increasePoints = gql`
-    mutation increasePoints($id: Int!) {
+    mutation increasePoints($id: String!) {
         increasePoints(id: $id) {
             id
             name
@@ -11,7 +11,7 @@ export const increasePoints = gql`
 `;
 
 export const decreasePoints = gql`
-    mutation decreasePoints($id: Int!) {
+    mutation decreasePoints($id: String!) {
         decreasePoints(id: $id) {
             id
             name
@@ -20,12 +20,36 @@ export const decreasePoints = gql`
     }
 `;
 
-export const deleteUser = gql`
-    mutation deleteUser($id: Int!) {
+export const removeUser = gql`
+    mutation deleteUser($id: String!) {
         deleteUser(id: $id) {
             id
             name
             points
+        }
+    }
+`;
+
+export const createUser = gql`
+    mutation createUser(
+        $name: String!
+        $age: Int!
+        $address: String!
+    ) {
+        createUser(
+            input: {
+                name: $name
+                age: $age
+                address: $address
+            }
+        ) {
+            id
+            name
+            points
+            age
+            address {
+                first
+            }
         }
     }
 `;

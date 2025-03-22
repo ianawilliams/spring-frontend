@@ -9,12 +9,12 @@ export type UserInput = {
 };
 
 export type UserItem = {
-  id: number;
+  id: string;
   name: string;
   points: number;
 }
 
 export type User = UserInput & {
-  id: number;
+  id: string;
   points: number;
 };

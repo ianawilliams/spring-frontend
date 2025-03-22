@@ -27,6 +27,7 @@
             <button
                 class="btn btn--wide btn--primary"
                 :disabled="v$.$invalid"
+                @click.stop="newUser"
             >
                 Create
             </button>
@@ -34,11 +35,16 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import TextInput from '@/components/ui/inputs/TextInput.vue';
 import NumberInput from '@/components/ui/inputs/NumberInput.vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import { createUser } from '@/graphql/mutations';
+import { useMutation } from '@vue/apollo-composable'
+
+const { mutate: addUser } = useMutation(createUser);
+
 const blankUser = {
     name: null,
     age: null,
@@ -52,8 +58,16 @@ const rules = {
 }
 
 const user = reactive(blankUser);
+const loading = ref(false);
 
 const v$ = useVuelidate(rules, user)
+
+const newUser = async () => {
+    loading.value = true;
+    const res = await addUser(user);
+    console.log(res);
+    loading.value = false;
+}
 
 </script>
 <style lang="scss" scoped>
@@ -62,6 +76,10 @@ const v$ = useVuelidate(rules, user)
 
     .user-create__btns {
         margin-top: 20px;
+    }
+
+    &:deep(.form-input) {
+        margin-bottom: 10px;
     }
 }
 </style>

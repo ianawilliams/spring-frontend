@@ -5,13 +5,13 @@
     @close-dialog="toggleDelete(null)"
   >
     <template #header>
+      <BtnIcon icon="plus" @click.stop="openCreate" />
       <BtnSwitch
         v-model="alphOrder"
         active-icon="order-alphabetical-ascending"
         deactive-icon="sort-ascending"
       />
       <SearchBar v-model="searchTerm" />
-      <BtnIcon icon="plus" @click.stop="openCreate" />
     </template>
     <div v-if="loading" class="loader-wrapper">
       <div class="loader"></div>
@@ -52,7 +52,7 @@
             </button>
             <button
               class="btn btn--alert"
-              @click.stop=""
+              @click.stop="confirmDelete"
             >
               Delete
             </button>
@@ -66,7 +66,9 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useLazyQuery } from '@vue/apollo-composable'
+import { useMutation } from '@vue/apollo-composable'
 import { getUsers } from '@/graphql/queries';
+import { removeUser } from '@/graphql/mutations';
 import type { UserItem } from '@/types/user';
 import UserDisplay from '@/components/users/UserItem.vue';
 import BaseUi from '@/layouts/BaseUi.vue';
@@ -78,14 +80,14 @@ import UserCreate from '@/components/users/UserCreate.vue';
 const sideBarTrigger = ref("close");
 const alphOrder = ref(false);
 const searchTerm = ref<string | null>(null);
-const selectedId = ref<number | null>(null);
+const selectedId = ref<string | null>(null);
 
 const users = ref<UserItem[]>([]);
 const dialogOpen = ref(false);
 
 const deleteUser = ref<UserItem | null>(null);
 
-
+const { mutate: trashUser } = useMutation(removeUser);
 const { result, load, refetch, loading } = useLazyQuery(getUsers,{
   alph: alphOrder,
   search: searchTerm
@@ -99,7 +101,7 @@ onMounted(async () => {
   await load();
 })
 
-const toggleUser = (id: number) => {
+const toggleUser = (id: string) => {
   selectedId.value = id;
   sideBarTrigger.value = `open-${id}`;
 }
@@ -112,6 +114,15 @@ const toggleDelete = (user: UserItem | null) => {
 const openCreate = () => {
   selectedId.value = null;
   sideBarTrigger.value = "create";
+}
+
+const confirmDelete = async () => {
+  if (deleteUser.value) {
+    await trashUser({id: deleteUser.value.id})
+    toggleDelete(null);
+    refetch();
+  }
+
 }
 
 
