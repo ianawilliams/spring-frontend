@@ -3,21 +3,21 @@
         <div>
             <TextInput
                 v-model="user.name"
-                label="Name"
+                :label="$t('form.name')"
                 :invalid="v$.name.$error"
                 :errors="v$.name.$errors"
                 @blur="v$.name.$touch"
             />
             <NumberInput
                 v-model="user.age"
-                label="Age"
+                :label="$t('form.age')"
                 :invalid="v$.age.$error"
                 :errors="v$.age.$errors"
                 @blur="v$.age.$touch"
             />
             <TextInput
                 v-model="user.address"
-                label="Address"
+                :label="$t('form.address')"
                 :invalid="v$.address.$error"
                 :errors="v$.address.$errors"
                 @blur="v$.address.$touch"
@@ -29,7 +29,7 @@
                 :disabled="v$.$invalid"
                 @click.stop="newUser"
             >
-                Create
+                {{ $t('form.create') }}
             </button>
         </div>
     </div>
@@ -57,15 +57,26 @@ const rules = {
     address: { required },
 }
 
-const user = reactive(blankUser);
+const user = reactive({...blankUser});
 const loading = ref(false);
 
 const v$ = useVuelidate(rules, user)
+
+const emit = defineEmits(["new-user"])
+
+const resetForm = async () => {
+    Object.assign(user, blankUser);
+    v$.value.$reset();
+}
 
 const newUser = async () => {
     loading.value = true;
     const res = await addUser(user);
     console.log(res);
+    if (res?.data?.createUser) {
+        resetForm();
+        emit("new-user");
+    }
     loading.value = false;
 }
 

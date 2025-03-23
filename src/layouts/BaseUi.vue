@@ -8,17 +8,29 @@
     <HeaderMain>
       <slot name="header"></slot>
       <template #right>
-        <BtnIcon 
-          :icon="sideBarOpen ? 'arrow-right' : 'arrow-left'"
-          @click.stop="toggleSidebar"
-        />
+        <div class="header-right">
+          <BtnIcon 
+            icon="cog"
+            @click.stop="sideBarTrigger = 'settings'"
+          />
+          
+          <BtnIcon 
+            :icon="sideBarOpen ? 'arrow-right' : 'arrow-left'"
+            @click.stop="toggleSidebar"
+          />
+        </div>
       </template>
     </HeaderMain>
     <main>
       <slot></slot>
     </main>
     <aside class="sidebar">
-      <slot name="sidebar"></slot>
+      <SettingsPanel
+        v-if="sideBarTrigger == 'settings'"
+      >
+        <slot name="settings"></slot>
+      </SettingsPanel>
+      <slot v-else name="sidebar"></slot>
     </aside>
     <DialogPopup
       v-model="dialogOpen"
@@ -32,6 +44,7 @@
 import { computed } from 'vue';
 import HeaderMain from '@/components/ui/base/HeaderMain.vue';
 import DialogPopup from '@/components/ui/DialogPopup.vue';
+import SettingsPanel from '@/components/ui/SettingsPanel.vue';
 
 const sideBarTrigger = defineModel<string>("side-index");
 const dialogOpen = defineModel<boolean>("dialog");
@@ -100,6 +113,12 @@ $sidebar-bp: 800px;
     z-index: 99;
     background: $background-main;
     border-left: 1px solid $border-color;
+  }
+}
+
+.header-right {
+  &:deep(.btn-icon) {
+    margin-left: $padding/2;
   }
 }
 </style>

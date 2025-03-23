@@ -12,7 +12,7 @@
         icon="minus"
         @click.stop="decrease"
       />
-      {{ user.points }} {{ user.points == 1 ? "point" : "points" }}
+      {{ $t(user.points == 1 ? "point" : "points", {value: user.points}) }}
     </div>
     <div>
       <BtnIcon

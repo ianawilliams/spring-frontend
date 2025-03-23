@@ -1,20 +1,22 @@
 <template>
     <div class="user-panel">
       <template v-if="loading">
-        Loading...
+        <div class="loader-wrapper">
+          <div class="loader"></div>
+        </div>
       </template>
       <template v-else-if="user">
         <h1>{{ user.name }}</h1>
-        <div>Age: {{ user.age }}</div>
+        <div>{{ $t('age') }} {{ user.age }}</div>
         <div>
-          {{ user.points }} {{ user.points == 1 ? "point" : "points" }}
+          {{ $t(user.points == 1 ? "point" : "points", {value: user.points}) }}
         </div>
         <div>
           {{ user.address.first }}
         </div>
       </template>
       <template v-else>
-        User not found
+        {{ $t("userNotFound") }}
       </template>
     </div>
 </template>
