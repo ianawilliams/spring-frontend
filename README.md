@@ -1,29 +1,5 @@
 # Spring Financial Assignment
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
 ## Leaderboard
 
 This is a vue app setup with Vite that uses apollo composable for communicating with the graphql backend. It displays a list of users and their points total. The app user can sort the users by points total or alphabetically by name. 
@@ -50,4 +26,28 @@ Shows a list of the users and their scores. Plus/minus buttons will change the p
 X button on the right of the table item will open a dialog to confirm that you want to delete the user. 
 
 ## Setup
-The front end has a file .env that you can set the url you are running the backend from. 
+The front end has a file .env that you can set the url you are running the backend from. The project was built using node version 18.20.4
+
+## Project Setup
+
+```sh
+npm install
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+### Type-Check, Compile and Minify for Production
+
+```sh
+npm run build
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
