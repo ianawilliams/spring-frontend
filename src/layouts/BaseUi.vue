@@ -10,11 +10,13 @@
       <template #right>
         <div class="header-right">
           <BtnIcon 
+            class="margin-left"
             :icon="sideBarTrigger == 'settings' ? 'cog-outline' : 'cog'"
             @click.stop="toggleSettings"
           />
           
           <BtnIcon 
+            class="margin-left"
             :icon="sideBarOpen ? 'arrow-right' : 'arrow-left'"
             @click.stop="toggleSidebar"
           />
@@ -24,10 +26,15 @@
     <div class="flex-column">
       <main class="flex-column">
         <ScrollWrapper>
-          <slot></slot>
+          <div v-if="subHeaderContent" class="sub-header">
+            <slot name="subHeader"></slot>
+          </div>
+          <div class="main-content">
+            <slot></slot>
+          </div>
         </ScrollWrapper>
       </main>
-      <aside class="sidebar flex-column">
+      <aside class="sidebar flex-column border-left">
         <ScrollWrapper>
           <SettingsPanel
             v-if="sideBarTrigger == 'settings'"
@@ -47,7 +54,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useSlots } from 'vue';
 import HeaderMain from '@/components/ui/base/HeaderMain.vue';
 import DialogPopup from '@/components/ui/DialogPopup.vue';
 import ScrollWrapper from '@/components/ui/layout/ScrollWrapper.vue';
@@ -57,6 +64,11 @@ const sideBarTrigger = defineModel<string>("side-index");
 const dialogOpen = defineModel<boolean>("dialog");
 
 const emit = defineEmits(["close-dialog"])
+const slots = useSlots()
+
+const subHeaderContent = computed<boolean>(() => {
+  return !!slots["subHeader"];
+})
 
 const sideBarOpen = computed<boolean>(() => {
   if (sideBarTrigger.value && sideBarTrigger.value.length) {
@@ -117,14 +129,12 @@ $sidebar-bp: 800px;
   }
 
   main {
-    padding: $padding;
     width: 100%;
   }
   .sidebar {
     display: flex;
     width: 0;
     background: $background-main;
-    border-left: 1px solid $border-color;
 
     @include smaller-than( $sidebar-bp ) {
       position: fixed;
@@ -132,22 +142,14 @@ $sidebar-bp: 800px;
       right: 0;
       height: calc(100% - 40px);
     }
-    /*
-    position: fixed;
-    top: 40px;
-    right: 0;
-    height: calc(100% - 40px);
-    width: 0;
-    z-index: 99;
-    background: $background-main;
-    border-left: 1px solid $border-color;
-    */
   }
 }
+.main-content {
+  padding: $padding;
+}
 
-.header-right {
-  &:deep(.btn-icon) {
-    margin-left: calc($padding/2);
-  }
+.sub-header {
+  padding: 5px;
+  border-bottom: 1px solid $border-color;
 }
 </style>

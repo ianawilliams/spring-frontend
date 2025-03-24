@@ -3,6 +3,11 @@ export const fr = {
     label: "Langue:",
     msg: "Les traductions proviennent de Google Translate",
   },
+  sort: {
+    label: "Trier:",
+    points: "Points",
+    names: "Noms",
+  },
   empty: 'Aucun utilisateur',
   point: '{value} point',
   points: '{value} points',

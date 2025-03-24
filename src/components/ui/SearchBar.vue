@@ -39,9 +39,9 @@ const id = `search-${useId()}`;
     display: flex;
     align-items: center;
     height: 28px;
+    border-radius: 14px;
     border: 1px solid $border-color;
     padding-left: 2px;
-    border-radius: 4px;
     overflow: hidden;
 
     &.search-bar--btn {

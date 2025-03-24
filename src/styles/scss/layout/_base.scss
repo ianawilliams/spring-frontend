@@ -1,3 +1,5 @@
+@use "@/styles/scss/vars/index" as *;
+
 :root {
     --primary: #673ab7;
     --primary-dark: #4d2b8c;
@@ -19,4 +21,20 @@ html {
     flex-grow: 1;
     min-height: 0;
     min-width: 0;
+}
+
+.border-left {
+    border-left: 1px solid $border-color;
+}
+
+.border-right {
+    border-right: 1px solid $border-color;
+}
+
+.margin-left {
+    margin-left: calc($padding/2);
+}
+
+.margin-right {
+    margin-right: calc($padding/2);
 }

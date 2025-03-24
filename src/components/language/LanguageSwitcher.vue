@@ -1,7 +1,10 @@
 <template>
   <div class="language-swticher">
-    <label>{{ $t("language.label") }}</label>
-    <select v-model="locale">
+    <label for="lang-switcher">{{ $t("language.label") }}</label>
+    <select
+      v-model="locale"
+      id="lang-switcher"
+    >
       <option v-for="(lang, index) in availableLocales" :key="index">
         {{  lang  }}
       </option>

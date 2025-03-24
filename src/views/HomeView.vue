@@ -6,20 +6,23 @@
   >
     <template #header>
       <div class="header-left">
-        <div class="header-left__item">
+        <div class="header-left__item margin-right">
           <BtnIcon icon="plus" @click.stop="openCreate" />
         </div>
-        <div class="header-left__item">
-          <BtnSwitch
-            v-model="alphOrder"
-            active-icon="order-alphabetical-ascending"
-            deactive-icon="sort-ascending"
-          />
-        </div>
-        <div class="header-left__item">    
+        <div class="header-left__item margin-right">    
           <SearchBar v-model="searchTerm" />
         </div>
       </div>
+    </template>
+    <template #subHeader>
+      <SortInput v-model="alphOrder" />
+      <!-- <div>
+        <BtnSwitch
+          v-model="alphOrder"
+          active-icon="order-alphabetical-ascending"
+          deactive-icon="sort-ascending"
+        />
+      </div> -->
     </template>
     <div v-if="initialLoad" class="loader-wrapper">
       <div class="loader"></div>
@@ -107,9 +110,9 @@ import type { UserItem } from '@/types/user';
 import UserDisplay from '@/components/users/UserItem.vue';
 import BaseUi from '@/layouts/BaseUi.vue';
 import UserPanel from '@/components/users/UserPanel.vue';
-import BtnSwitch from '@/components/ui/buttons/BtnSwitch.vue';
 import SearchBar from '@/components/ui/SearchBar.vue';
 import UserCreate from '@/components/users/UserCreate.vue';
+import SortInput from '@/components/ui/inputs/SortInput.vue';
 
 const sideBarTrigger = ref("close");
 const alphOrder = ref(false);
@@ -214,9 +217,5 @@ watch(result, (value) => {
 .header-left {
   display: flex;
   align-items: center;
-
-  .header-left__item {
-    margin-right: $padding/2;
-  }
 }
 </style>
