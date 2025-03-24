@@ -10,8 +10,8 @@
       <template #right>
         <div class="header-right">
           <BtnIcon 
-            icon="cog"
-            @click.stop="sideBarTrigger = 'settings'"
+            :icon="sideBarTrigger == 'settings' ? 'cog-outline' : 'cog'"
+            @click.stop="toggleSettings"
           />
           
           <BtnIcon 
@@ -21,17 +21,23 @@
         </div>
       </template>
     </HeaderMain>
-    <main>
-      <slot></slot>
-    </main>
-    <aside class="sidebar">
-      <SettingsPanel
-        v-if="sideBarTrigger == 'settings'"
-      >
-        <slot name="settings"></slot>
-      </SettingsPanel>
-      <slot v-else name="sidebar"></slot>
-    </aside>
+    <div class="flex-column">
+      <main class="flex-column">
+        <ScrollWrapper>
+          <slot></slot>
+        </ScrollWrapper>
+      </main>
+      <aside class="sidebar flex-column">
+        <ScrollWrapper>
+          <SettingsPanel
+            v-if="sideBarTrigger == 'settings'"
+          >
+            <slot name="settings"></slot>
+          </SettingsPanel>
+          <slot v-else name="sidebar"></slot>
+        </ScrollWrapper>
+      </aside>
+    </div>
     <DialogPopup
       v-model="dialogOpen"
       @close-dialog="emit('close-dialog')"
@@ -44,6 +50,7 @@
 import { computed } from 'vue';
 import HeaderMain from '@/components/ui/base/HeaderMain.vue';
 import DialogPopup from '@/components/ui/DialogPopup.vue';
+import ScrollWrapper from '@/components/ui/layout/ScrollWrapper.vue';
 import SettingsPanel from '@/components/ui/SettingsPanel.vue';
 
 const sideBarTrigger = defineModel<string>("side-index");
@@ -59,8 +66,15 @@ const sideBarOpen = computed<boolean>(() => {
   }
 })
 
+const toggleSettings = () => {
+  if (sideBarTrigger.value && sideBarTrigger.value == 'settings') {
+    sideBarTrigger.value = "close";
+  } else {
+    sideBarTrigger.value = "settings";
+  }
+}
+
 const toggleSidebar = () => {
-  console.log("toggle sidebar")
   if (sideBarTrigger.value && sideBarTrigger.value.length && sideBarTrigger.value != "close") {
     sideBarTrigger.value = "close";
   } else {
@@ -76,6 +90,8 @@ $sidebar-bp: 800px;
 .app-wrapper {
   overflow: auto;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 
   &.app-wrapper--dialog {
     overflow: hidden;
@@ -105,6 +121,18 @@ $sidebar-bp: 800px;
     width: 100%;
   }
   .sidebar {
+    display: flex;
+    width: 0;
+    background: $background-main;
+    border-left: 1px solid $border-color;
+
+    @include smaller-than( $sidebar-bp ) {
+      position: fixed;
+      top: 40px;
+      right: 0;
+      height: calc(100% - 40px);
+    }
+    /*
     position: fixed;
     top: 40px;
     right: 0;
@@ -113,12 +141,13 @@ $sidebar-bp: 800px;
     z-index: 99;
     background: $background-main;
     border-left: 1px solid $border-color;
+    */
   }
 }
 
 .header-right {
   &:deep(.btn-icon) {
-    margin-left: $padding/2;
+    margin-left: calc($padding/2);
   }
 }
 </style>

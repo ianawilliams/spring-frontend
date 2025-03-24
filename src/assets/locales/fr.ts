@@ -1,4 +1,8 @@
 export const fr = {
+  language: {
+    label: "Langue:",
+    msg: "Les traductions proviennent de Google Translate",
+  },
   empty: 'Aucun utilisateur',
   point: '{value} point',
   points: '{value} points',

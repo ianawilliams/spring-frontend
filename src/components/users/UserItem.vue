@@ -31,7 +31,6 @@ const props = defineProps<{ user: UserItem }>()
 
 const { mutate: addPoint } = useMutation(increasePoints)
 const { mutate: minusPoint } = useMutation(decreasePoints)
-// const { mutate: removeUser } = useMutation(deleteUser);
 
 const emit = defineEmits(["point-change", "delete-user"])
 
@@ -44,16 +43,6 @@ const decrease = async () => {
   await minusPoint({id: props.user.id});
   emit("point-change");
 }
-
-// const remove = async () => {
-//   try {
-//     await removeUser({id: props.user.id});
-//     emit('delete-user');
-//   } catch (e: unknown) {
-//     console.log("Error:")
-//     console.log(e);
-//   }
-// }
 
 </script>
 <style lang="scss" scoped>

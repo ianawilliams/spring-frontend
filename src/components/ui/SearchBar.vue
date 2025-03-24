@@ -13,7 +13,7 @@
             v-model="searchTerm"
             :id="id"
             ref="searchInput"
-            placeholder="Search..."
+            :placeholder="$t('search.placeholder')"
             @focus="focused = true"
             @blur="focused = false"
         />
